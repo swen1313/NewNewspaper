@@ -1,11 +1,48 @@
 {% extends 'default.html' %}
+{% load custom_filters %}
 
 
 {% block title %}
 Новость
 {% endblock title %}
 
-
 {% block content %}
-<h1>{{ news_detail }}</h1>
+
+  <h1>Что нового?</h1>
+
+    <h3>{{ time_now }}</h3>
+
+
+        <table>
+            <tr>
+                <td>
+                <b>Заголовок</b>
+                </td>
+                <td>
+                    <b>Текст</b>
+                </td>
+                <td>
+                    <b>Дата написания</b>
+                </td>
+
+
+            </tr>
+
+            <tr>
+                <td>
+                    {{ post.header|censor:'badwodrforfemale'|censor:'badwordformale'|censor:'badwordforchild'|censor:'badwordfornonbinaryperson' }}
+                </td>
+                <td>
+                    {{ post.text|censor:'badwodrforfemale'|censor:'badwordformale'|censor:'badwordforchild'|censor:'badwordfornonbinaryperson'}}
+                </td>
+                <td>
+                    {{ post.datetime}}
+                </td>
+
+            </tr>
+
+        </table>
+
+
+
 {% endblock content %}
