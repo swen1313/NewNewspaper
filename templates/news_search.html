@@ -1,41 +1,51 @@
 {% extends 'default.html' %}
-{% load custom_filters %}
-
 
 {% block title %}
-Новости
+Искать новость
 {% endblock title %}
 
+
 {% block content %}
-
-  <h1>Все новости</h1>
-
+    <h1>Искать новость</h1>
     <h3>{{ time_now }}</h3>
-
-
-        <table>
+    <form method="GET">
+    {{ filter.form }}
+    <input type="submit" value="Найти">
+    </form>
+    <table>
             <tr>
+                <td>
+                <b>Автор</b>
+                </td>
                 <td>
                 <b>Заголовок</b>
                 </td>
                 <td>
                     <b>Текст</b>
                 </td>
-
+                <td>
+                    <b>Дата написания</b>
+                </td>
             </tr>
-        {% for post in news %}
+            {% for post in filter.qs %}
             <tr>
                 <td>
-                    {{ post.header|censor:'badwodrforfemale'|censor:'badwordformale'|censor:'badwordforchild'|censor:'badwordfornonbinaryperson'}}
+                    {{ post.author }}
+                </td>
+               <td>
+                    {{ post.header }}
                 </td>
                 <td>
-                    {{ post.text|truncatechars:50|censor:'badwodrforfemale'|censor:'badwordformale'|censor:'badwordforchild'|censor:'badwordfornonbinaryperson'}}
+                    {{ post.text }}
+                </td>
+                <td>
+                    {{ post.datetime }}
                 </td>
 
             </tr>
-        {% endfor %}
-        </table>
-        {% if is_paginated %}
+            {% endfor %}
+    </table>
+    {% if is_paginated %}
 
         {% if page_obj.has_previous %}
             <a href="?page=1">First</a>
@@ -53,10 +63,6 @@
         {% if page_obj.has_next %}
             <a href="?page={{ page_obj.next_page_number }}">>>></a>
             <a href="?page={{ page_obj.paginator.num_pages }}">Last</a>
-        {% endif %}
-
-
-
-
+    {% endif %}
 {% endif %}
 {% endblock content %}

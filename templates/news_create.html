@@ -1,0 +1,15 @@
+{% extends 'default.html' %}
+
+{% block title %} Создать новость {% endblock title %}
+
+{% block content %}
+    <h1>Создать новость</h1>
+
+       <h3>{{ time_now }}</h3>
+
+    <form method="POST">
+        {% csrf_token %}
+        {{ form }}
+        <input type="submit" value="Создать">
+    </form>
+{% endblock content %}

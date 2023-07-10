@@ -1,0 +1,36 @@
+{% extends 'default.html' %}
+
+{% block title %}  Удалить новость? {% endblock title %}
+
+{% block content %}
+<h2>Вы действительно хотите удалить данную новость?</h2>
+<table>
+    <tr>
+        <td>
+            Заголовок
+        </td>
+        <td>
+            Текст
+        </td>
+        <td>
+            Дата написания
+        </td>
+    </tr>
+
+    <tr>
+        <td>
+            {{ post.header }}
+        </td>
+        <td>
+            {{ post.text }}
+        </td>
+        <td>
+            {{ post.datetime }}
+        </td>
+    </tr>
+</table>
+
+<form method="POST">
+    {% csrf_token %}
+    <input type="submit" value="подтвердить"></form>
+{% endblock content %}

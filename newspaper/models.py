@@ -53,6 +53,8 @@ class Post(models.Model):
         return f'{self.header.title()}: {self.text[:20]}'
 
 
+
+
     def like(self):
         return self.postRating + 1
         self.save()
