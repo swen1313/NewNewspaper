@@ -28,7 +28,11 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 
+LOGIN_URL = 'sign/login/'
+LOGIN_REDIRECT_URL = '/'
 # Application definition
+
+SITE_ID = 1
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -37,7 +41,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'newspaper', 'django_filters'
+    'allauth', 'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
+    'newspaper', 'sign', 'django_filters'
 ]
 
 MIDDLEWARE = [
@@ -71,6 +78,10 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'New.wsgi.application'
 
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases

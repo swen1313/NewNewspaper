@@ -1,21 +1,14 @@
-from django.db import models
-
-# Create your models here.
 from django.contrib.auth.models import User
 from django.db import models
-
-
 
 class Author(models.Model):
     authorUser = models.OneToOneField(User, on_delete=models.CASCADE)
     userRating = models.IntegerField(default=0)
 
-
     def update_rating(self):
        postRat = self.post_set.all().aggregate(postRating=Sum('rating'))
        pRat = 0
        pRat += postRat.get('postRating')
-
        commentRat = self.authorUser.comment_set.all().aggregate(commentRating=Sum('rating'))
        cRat = 0
        cRat += commentRat.get('commentRating')
@@ -24,16 +17,12 @@ class Author(models.Model):
        self.save()
 
 
-
-
-
 class Category(models.Model):
     name = models.CharField(max_length=64, unique=True)
 
 
 article = 'A'
 new = 'N'
-
 choices = [(article, 'статья'), (new, 'новость')]
 
 
@@ -51,8 +40,6 @@ class Post(models.Model):
 
     def __str__(self):
         return f'{self.header.title()}: {self.text[:20]}'
-
-
 
 
     def like(self):

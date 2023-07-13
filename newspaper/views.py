@@ -1,11 +1,24 @@
 from datetime import datetime
-
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.shortcuts import render
-from django.views.generic import ListView, DetailView, DeleteView, UpdateView, CreateView
+from django.views.generic import ListView, DetailView, DeleteView, UpdateView, CreateView, TemplateView
 from .filters import PostFilter
-
 from .fotms import PostForm
+
 from .models import Post
+
+
+
+class IndexView(LoginRequiredMixin, TemplateView):
+    template_name = 'index.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['is_not_authors'] = not self.request.user.groups.filter(name='authors').exists()
+        return context
+
+
+
 
 
 class PostList(ListView):
@@ -40,20 +53,22 @@ class PostDeleteView(DeleteView):
     success_url = '/news'
 
 
-class PostUpdateView(UpdateView):
+class PostUpdateView(UpdateView, LoginRequiredMixin, PermissionRequiredMixin):
     template_name = 'news_create.html'
     form_class = PostForm
     success_url = '/news'
+    permission_required =('newspaper.change_post')
 
     def get_object(self, **kwargs):
             id = self.kwargs.get('pk')
             return Post.objects.get(pk=id)
 
 
-class PostCreateView(CreateView):
+class PostCreateView(CreateView, PermissionRequiredMixin):
     template_name = 'news_create.html'
     form_class = PostForm
     success_url = '/news'
+    permission_required = ('newspaper.add_post')
 
 # Create your views here.
 class PostSearchList(ListView):
@@ -70,3 +85,13 @@ class PostSearchList(ListView):
         context['filter'] = PostFilter(self.request.GET, queryset=self.get_queryset())
 
         return context
+
+
+
+
+
+
+
+
+
+
