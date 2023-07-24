@@ -1,7 +1,8 @@
 from django.urls import path
 
 from sign.views import upgrade_me
-from .views import PostList, PostDetail, PostDeleteView, PostUpdateView, PostCreateView, PostSearchList, IndexView
+from .views import PostList, PostDetail, PostDeleteView, PostUpdateView, PostCreateView, PostSearchList, IndexView, \
+    subscribers
 
 urlpatterns = [
     path('', IndexView.as_view()),
@@ -12,4 +13,5 @@ urlpatterns = [
     path('news/<int:pk>/edit', PostUpdateView.as_view(), name='news_edit'),
     path('news/<int:pk>/delete', PostDeleteView.as_view(), name='news_delete'),
     path('news/search', PostSearchList.as_view(), name='news_search'),
+    path('subscribers/', subscribers, name = 'subscribers'),
 ]

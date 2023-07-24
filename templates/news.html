@@ -21,20 +21,39 @@
                 <td>
                     <b>Текст</b>
                 </td>
+                <td>
+                    <b>Категория</b>
+                </td>
+
 
             </tr>
         {% for post in news %}
             <tr>
                 <td>
-                    {{ post.header|censor:'badwodrforfemale'|censor:'badwordformale'|censor:'badwordforchild'|censor:'badwordfornonbinaryperson'}}
+                    {{ post.header|sor:'badwodrforfemale'|sor:'badwordformale'|sor:'badwordforchild'|sor:'badwordfornonbinaryperson'}}
                 </td>
                 <td>
-                    {{ post.text|truncatechars:50|censor:'badwodrforfemale'|censor:'badwordformale'|censor:'badwordforchild'|censor:'badwordfornonbinaryperson'}}
+                    {{ post.text|truncatechars:50|sor:'badwodrforfemale'|sor:'badwordformale'|sor:'badwordforchild'|sor:'badwordfornonbinaryperson'}}
                 </td>
+                <td>
+                    {{ post.category}}
 
+
+                            <form method="POST" action="{% url 'subscribers' %}">
+                                <input type='hidden' name='category' value='{{ current_category.pk }}'>
+                                <button type="submit" class="btn btn-outline-primary" name='user_pk' value="{{ user.pk }}">
+                                    {% csrf_token %}
+                                    Подписаться
+                                </button>
+                            </form>
+
+                </td>
             </tr>
         {% endfor %}
         </table>
+
+
+
         {% if is_paginated %}
 
         {% if page_obj.has_previous %}

@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>NewsPaper</title>
+</head>
+<body>
+     <h2>Здравствуй {{ user.username }}. Вышла новая статья в выбранной ваши категории {{ category }}!</h2>
+     <h3>{{ post.title }}</h3>
+     <p>{{ post.text|truncatechars:50 }}</p>
+     <a href="http://127.0.0.1:8000/news/post/{{ post.pk }}">Читать</a>
+
+</body>
+</html>

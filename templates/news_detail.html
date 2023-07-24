@@ -30,10 +30,10 @@
 
             <tr>
                 <td>
-                    {{ post.header|censor:'badwodrforfemale'|censor:'badwordformale'|censor:'badwordforchild'|censor:'badwordfornonbinaryperson' }}
+                    {{ post.header|sor:'badwodrforfemale'|sor:'badwordformale'|sor:'badwordforchild'|sor:'badwordfornonbinaryperson' }}
                 </td>
                 <td>
-                    {{ post.text|censor:'badwodrforfemale'|censor:'badwordformale'|censor:'badwordforchild'|censor:'badwordfornonbinaryperson'}}
+                    {{ post.text|sor:'badwodrforfemale'|sor:'badwordformale'|sor:'badwordforchild'|sor:'badwordfornonbinaryperson'}}
                 </td>
                 <td>
                     {{ post.datetime }}

@@ -2,8 +2,8 @@ from django import template
 
 register = template.Library()
 
-@register.filter(name='censor')
-def censor(value, arg):
+@register.filter(name='sor')
+def sor(value, arg):
     if arg not in str(value):
         return str(value)
     else:

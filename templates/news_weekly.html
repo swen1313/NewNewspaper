@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>NewsPaper</title>
+</head>
+<body>
+    <h3>Здравствуйте {{ user.username }}. Все новости за неделю в категории {{ category }}</h3>
+            <ul>
+            {% for post in posts %}
+            <li><a href="http://127.0.0.1:8000/news/post/{{ post.pk }}">{{ post.title }}</a></li>
+            {% endfor %}
+            </ul>
+</body>
+</html>

@@ -1,5 +1,7 @@
 from django.contrib.auth.models import User
 from django.db import models
+from django.db.models import Sum
+
 
 class Author(models.Model):
     authorUser = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -19,15 +21,32 @@ class Author(models.Model):
 
 class Category(models.Model):
     name = models.CharField(max_length=64, unique=True)
+    subscribers = models.ManyToManyField(User, related_name='categories')
+
+    def __str__(self):
+        return f'{self.name.title()}'
+
+
 
 
 article = 'A'
 new = 'N'
 choices = [(article, 'статья'), (new, 'новость')]
 
+medicine = 'Me'
+art = 'Ar'
+buisness = 'Bu'
+sport = 'Sp'
 
-def __str__(self):
-    return f'{self.name.title()}'
+CATEGORY_TYPE = [
+   (medicine, 'Медицина'),
+   (art, 'Искусство'),
+   (buisness, 'Бизнес'),
+   (sport, 'Спорт'),
+]
+
+
+
 
 class Post(models.Model):
     author = models.ForeignKey(Author, on_delete=models.CASCADE)
@@ -76,4 +95,17 @@ class Comment(models.Model):
     def dislike(self):
         return self.commentRating - 1
         self.save()
+
+
+#class Subscribes(models.Model):
+    #user = models.ForeignKey(
+        #to=User,
+        #on_delete=models.CASCADE,
+        #related_name='subscribes',
+    #)
+    #category = models.ForeignKey(
+        #to='Category',
+        #on_delete=models.CASCADE,
+        #related_name='subscribes',
+    #)
 
