@@ -1,23 +1,54 @@
 import logging
+from datetime import timezone, timedelta
 
 from django.conf import settings
 
 from apscheduler.schedulers.blocking import BlockingScheduler
 from apscheduler.triggers.cron import CronTrigger
+from django.contrib.auth.models import User
 from django.core.management.base import BaseCommand
+from django.template.loader import render_to_string
 from django_apscheduler.jobstores import DjangoJobStore
 from django_apscheduler.models import DjangoJobExecution
+
+from newspaper.models import Post
 
 logger = logging.getLogger(__name__)
 
 
-# наша задача по выводу текста на экран
-def my_job():
-    #  Your job processing logic here...
-    print('hello from job')
 
 
-# функция которая будет удалять неактуальные задачи
+
+def send_mail():
+    """ собственно отправка сообщений """
+    # выбираем новости за прошедшие 7 дней
+    new_posts = Post.objects.filter(
+        created__gte=(timezone.now() - timedelta(days=7))
+    )
+
+    for user in User.objects.all():
+        if user.email:
+
+            user_new_post = new_posts.filter(category__in=user.category_set.all())
+            if user_new_post:
+                # подготовка шаблона и сообщения
+                html_content = render_to_string(
+                    'news_weekly.html',
+                    {'posts': user_new_post, 'count': user_new_post.count(), 'user': user}
+                )
+                msg = EmailMultiAlternatives(
+                    subject='News Paper. Новости за неделю',
+                    body=f'Здравствуйте, {user.username}. Новости за неделю в вашей выбранной категории {{ category }} !',
+                    from_email='yyulyul1@yandex.ru',
+                    to=[user.email, ]
+                )
+                # привязка HTML и отправка
+                msg.attach_alternative(html_content, "text/html")
+                msg.send()
+
+
+
+            # функция которая будет удалять неактуальные задачи
 def delete_old_job_executions(max_age=604_800):
     """This job deletes all apscheduler job executions older than `max_age` from the database."""
     DjangoJobExecution.objects.delete_old_job_executions(max_age)
